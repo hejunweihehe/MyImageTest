@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.glidedemo.MatrixSizeActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_compress_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="输入缩放倍数（小于1）" />
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/txt_compress_hint"
+                android:text="scaleX" />
+
+            <EditText
+                android:id="@+id/edit_scalex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_compress_hint"
+                android:layout_toEndOf="@+id/textView"
+                android:ems="3"
+                android:inputType="numberDecimal" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_compress_hint"
+                android:layout_toEndOf="@+id/edit_scalex"
+                android:text="scaleY" />
+
+            <EditText
+                android:id="@+id/edit_scaley"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/textView2"
+                android:layout_toEndOf="@+id/textView2"
+                android:ems="3"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/btn_compress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/edit_scaley"
+                android:layout_toEndOf="@+id/edit_scaley"
+                android:onClick="onClick"
+                android:text="开始压缩" />
+        </RelativeLayout>
+
+        <CheckBox
+            android:id="@+id/chx_is_store"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btn_compress"
+            android:layout_alignBottom="@+id/btn_compress"
+            android:layout_alignStart="@+id/editText2"
+            android:text="是否保存到本地" />
+
+        <TextView
+            android:id="@+id/txt_bitmap_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+</ScrollView>
