@@ -106,7 +106,7 @@ public class SizeCompressActivity extends AppCompatActivity {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 // 把压缩后的数据存放到baos中
                 result.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                File imageFile = new File(Environment.getExternalStorageDirectory() + "/" + name);
+                File imageFile = new File(Environment.getExternalStorageDirectory() + "/size_" + System.currentTimeMillis() + name);
                 FileOutputStream fos = new FileOutputStream(imageFile);
                 fos.write(baos.toByteArray());
                 fos.flush();

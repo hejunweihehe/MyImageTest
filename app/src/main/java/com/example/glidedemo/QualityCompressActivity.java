@@ -1,11 +1,13 @@
 package com.example.glidedemo;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -93,10 +95,28 @@ public class QualityCompressActivity extends AppCompatActivity {
         //是否保存到本地
         if (chx_is_store.isChecked()) {
             try {
-                FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" + name);
+                File imageFile = new File(Environment.getExternalStorageDirectory() + "/" + name);
+                StringBuilder imageName = new StringBuilder();
+                for (int i = 0, last = 0; imageFile.exists(); i++) {
+                    imageName.delete(0, imageName.length());
+                    last = name.lastIndexOf(".");
+                    imageName.append(name.substring(0, last));
+                    imageName.append("(" + i + ")");
+                    imageName.append(name.substring(last, name.length()));
+                    imageFile = new File(Environment.getExternalStorageDirectory() + "/" + imageName.toString());
+                    name = imageName.toString();
+                    Log.d("hjw", imageFile.getAbsolutePath());
+                }
+                Log.d("hjw", "" + imageFile.getAbsolutePath());
+                FileOutputStream fos = new FileOutputStream(imageFile);
                 fos.write(baos.toByteArray());
                 fos.flush();
                 fos.close();
+                //将图片导入到图片库里面
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                intent.setData(Uri.fromFile(imageFile));
+                sendBroadcast(intent);
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("hjw", "Exception = " + e.toString());

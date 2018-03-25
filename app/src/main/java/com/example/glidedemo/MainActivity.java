@@ -44,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             break;
+            case R.id.btn_matrix_image: {
+                Intent intent = new Intent(this, MatrixSizeActivity.class);
+                startActivity(intent);
+            }
+            break;
         }
     }
 }

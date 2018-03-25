@@ -23,7 +23,8 @@
         <activity android:name=".SingleImageActivity" />
         <activity android:name=".QualityCompressActivity" />
         <activity android:name=".SizeCompressActivity" />
-        <activity android:name=".InSampleSizeActivity"></activity>
+        <activity android:name=".InSampleSizeActivity" />
+        <activity android:name=".MatrixSizeActivity"></activity>
     </application>
 
 </manifest>
