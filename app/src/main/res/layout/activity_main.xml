@@ -54,4 +54,11 @@
         android:layout_height="wrap_content"
         android:onClick="onClick"
         android:text="单张图片展示（matrix缩放法压缩）" />
+
+    <Button
+        android:id="@+id/btn_config_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onClick"
+        android:text="单张图片展示（格式压缩）" />
 </LinearLayout>

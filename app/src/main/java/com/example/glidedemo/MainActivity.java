@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             break;
+            case R.id.btn_config_image: {
+                Intent intent = new Intent(this, ConfigActivity.class);
+                startActivity(intent);
+            }
+            break;
         }
     }
 }
