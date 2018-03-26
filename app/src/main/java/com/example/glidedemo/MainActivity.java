@@ -22,8 +22,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             break;
-            case R.id.btn_optimize:
-                break;
+            case R.id.btn_optimize: {
+                Intent intent = new Intent(this, OptimalizeImageActivity.class);
+                startActivity(intent);
+            }
+            break;
             case R.id.btn_single_image: {
                 Intent intent = new Intent(this, SingleImageActivity.class);
                 startActivity(intent);

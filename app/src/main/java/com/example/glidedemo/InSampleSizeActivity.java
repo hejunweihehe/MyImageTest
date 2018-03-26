@@ -1,12 +1,16 @@
 package com.example.glidedemo;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -15,6 +19,8 @@ import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  * 采样率压缩
@@ -24,6 +30,8 @@ public class InSampleSizeActivity extends AppCompatActivity {
     private TextView txt_bitmap_info;
     private CheckBox chx_is_store;
     private EditText edit_sample;
+    private EditText edit_width;
+    private EditText edit_height;
     private Bitmap bitmap;
     private String path;
     private String name;
@@ -38,6 +46,8 @@ public class InSampleSizeActivity extends AppCompatActivity {
         image = findViewById(R.id.image);
         txt_bitmap_info = findViewById(R.id.txt_bitmap_info);
         edit_sample = findViewById(R.id.edit_sample);
+        edit_width = findViewById(R.id.edit_width);
+        edit_height = findViewById(R.id.edit_height);
         chx_is_store = findViewById(R.id.chx_is_store);
         ContentResolver cp = getContentResolver();
         Cursor cursor = cp.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -66,6 +76,33 @@ public class InSampleSizeActivity extends AppCompatActivity {
                 //bitmap = samplingRateCompress(path, inSampleSize);
                 bitmap = samplingRateCompress(path);
                 image.setImageBitmap(bitmap);
+                refreshUi();
+            }
+            break;
+            case R.id.btn_compress2: {
+                bitmap = ImageUtils.samplingRateCompress(path, 400, 400);
+                image.setImageBitmap(bitmap);
+                //是否保存到本地
+                if (chx_is_store.isChecked()) {
+                    try {
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        // 把压缩后的数据存放到baos中
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                        File imageFile = new File(Environment.getExternalStorageDirectory() + "/In_sample_" + System.currentTimeMillis() + name);
+                        FileOutputStream fos = new FileOutputStream(imageFile);
+                        fos.write(baos.toByteArray());
+                        fos.flush();
+                        fos.close();
+                        //将图片导入到图片库里面
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        intent.setData(Uri.fromFile(imageFile));
+                        sendBroadcast(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("hjw", "Exception = " + e.toString());
+                    }
+                }
                 refreshUi();
             }
             break;

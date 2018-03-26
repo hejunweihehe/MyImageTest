@@ -17,25 +17,39 @@ import android.widget.ImageView;
  * Created by 84625 on 2018/3/20.
  */
 
-public class ImageAdapter extends CursorAdapter {
+public class ImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
+    private Cursor mCursor;
 
-    public ImageAdapter(Context context, Cursor c, boolean autoRequery) {
-        super(context, c, autoRequery);
+    public ImageAdapter(Context context, Cursor c) {
         mInflater = LayoutInflater.from(context);
+        mCursor = c;
+    }
+
+
+    @Override
+    public int getCount() {
+        return mCursor.getCount();
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        return mInflater.inflate(R.layout.image_list_item, null);
+    public Object getItem(int position) {
+        return mCursor.moveToPosition(position);
     }
 
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        //图片路径
-        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
-        Bitmap bitmap = BitmapFactory.decodeFile(path);
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = mInflater.inflate(R.layout.image_list_item, null);
         ImageView imageView = view.findViewById(R.id.image);
+        mCursor.moveToPosition(position);
+        String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+        Bitmap bitmap = BitmapFactory.decodeFile(path);
         imageView.setImageBitmap(bitmap);
+        return view;
     }
 }

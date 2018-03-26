@@ -25,7 +25,7 @@ public class ImageActivity extends AppCompatActivity {
         ContentResolver cp = getContentResolver();
         Cursor cursor = cp.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
-        imageAdapter = new ImageAdapter(this, cursor, true);
+        imageAdapter = new ImageAdapter(this, cursor);
         lst.setAdapter(imageAdapter);
     }
 }
