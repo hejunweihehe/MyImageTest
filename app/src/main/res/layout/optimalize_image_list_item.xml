@@ -13,7 +13,8 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:background="#000"
-            android:scaleType="centerInside" />
+            android:scaleType="centerInside"
+            android:src="@mipmap/image_default" />
 
         <TextView
             android:id="@+id/txt_image_info"

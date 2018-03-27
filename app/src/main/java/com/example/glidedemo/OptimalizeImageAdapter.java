@@ -1,29 +1,21 @@
 package com.example.glidedemo;
 
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.net.Uri;
-import android.os.Environment;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 
 /**
  * Created by 84625 on 2018/3/20.
@@ -32,10 +24,15 @@ import java.io.FileOutputStream;
 public class OptimalizeImageAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
     private Cursor mCursor;
+    private boolean isIdle = true;//该变量判断当前ListVIew是否是静止的，false表示在滑动/拖动，true表示静止，此时就可以去下载图片了
 
     public OptimalizeImageAdapter(Context context, Cursor c) {
         mCursor = c;
         mInflater = LayoutInflater.from(context);
+    }
+
+    public void setIdle(boolean idle) {
+        isIdle = idle;
     }
 
     @Override
@@ -53,16 +50,6 @@ public class OptimalizeImageAdapter extends BaseAdapter {
         return position;
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        mCursor.moveToPosition(position);
-//        View view = mInflater.inflate(R.layout.optimalize_image_list_item, null);
-//        String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
-//        Bitmap bitmap = BitmapFactory.decodeFile(path);
-//        ((ImageView) view.findViewById(R.id.image)).setImageBitmap(bitmap);
-//        return view;
-//    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
@@ -77,23 +64,58 @@ public class OptimalizeImageAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         mCursor.moveToPosition(position);
-        //图片路径
-        String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
-        //对图片进行优化，方法中传递的是我们想要的图片的最大宽高，
-        // 由于图片的宽高比不一定会一致，所以说方法内部会按照图片原本的宽高比来计算最后的宽高
-        Bitmap bitmap = samplingRateCompress(path, 400, 400);
-        holder.imageView.setImageBitmap(bitmap);
-
-        //获取图片信息
-        StringBuilder sb = new StringBuilder();
-        sb.append("AllocationByteCount = " + bitmap.getAllocationByteCount());
-        holder.txt_image_info.setText(sb.toString());
+        if (isIdle) {
+            //图片路径
+            String path = mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+            // 设置Tag
+            holder.imageView.setTag(path);
+            //开启异步任务
+            BitmapCompressTask task = new BitmapCompressTask(holder.imageView, holder.txt_image_info, mCursor.getString(mCursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME)));
+            task.execute(path);
+        }
         return convertView;
     }
 
     class ViewHolder {
         ImageView imageView;
         TextView txt_image_info;
+    }
+
+    private class BitmapCompressTask extends AsyncTask<String, Void, Bitmap> {
+        private ImageView image;
+        private TextView imageInfo;
+        private String tag;
+        private String name;
+
+        public BitmapCompressTask(ImageView image, TextView imageInfo, String name) {
+            this.image = image;
+            this.imageInfo = imageInfo;
+            this.name = name;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            tag = strings[0];
+            //对图片进行优化，方法中传递的是我们想要的图片的最大宽高，
+            // 由于图片的宽高比不一定会一致，所以说方法内部会按照图片原本的宽高比来计算最后的宽高
+            Log.d("hjw", "path = " + strings[0]);
+            Bitmap bitmap = samplingRateCompress(strings[0], 400, 400);
+            return bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            if (bitmap != null) {
+                //通过tag来判断是否是当前位置
+                if (image.getTag() != null && image.getTag().equals(tag)) {
+                    image.setImageBitmap(bitmap); //获取图片信息
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("name = " + name);
+                    sb.append("\nAllocationByteCount = " + bitmap.getAllocationByteCount());
+                    imageInfo.setText(sb.toString());
+                }
+            }
+        }
     }
 
     /**
@@ -109,8 +131,13 @@ public class OptimalizeImageAdapter extends BaseAdapter {
         options.inJustDecodeBounds = false;
         Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
 
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
         // 把压缩后的数据存放到baos中
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        //这里的图片是有可能为null的，特别是在网络加载图片的时候就经常会遇到，
+        // 可能是由于图片没加载成功或者是这张图是缓存图，然后被清空了但是数据库的记录还在
+        if (bitmap == null) {
+            return null;
+        }
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(baos.toByteArray()));
         return bitmap;

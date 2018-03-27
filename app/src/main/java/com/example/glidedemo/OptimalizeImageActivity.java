@@ -8,6 +8,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 public class OptimalizeImageActivity extends AppCompatActivity {
@@ -24,5 +25,29 @@ public class OptimalizeImageActivity extends AppCompatActivity {
                 null, null, null, MediaStore.Images.ImageColumns.DATA + " DESC");
         adapter = new OptimalizeImageAdapter(this, cursor);
         lst.setAdapter(adapter);
+        lst.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {
+                    case SCROLL_STATE_FLING: {
+                        //滑动
+                    }
+                    break;
+                    case SCROLL_STATE_IDLE: {
+                        //停止
+                    }
+                    break;
+                    case SCROLL_STATE_TOUCH_SCROLL: {
+                        //拖动
+                    }
+                    break;
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+            }
+        });
     }
 }
