@@ -29,6 +29,8 @@
         <activity android:name=".MatrixSizeActivity" />
         <activity android:name=".ConfigActivity" />
         <activity android:name=".OptimalizeImageActivity"></activity>
+        <activity android:name=".GlideOptimalizeImageActivity"></activity>
+
     </application>
 
 </manifest>

@@ -27,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             break;
+            case R.id.btn_glide_optimize: {
+                Intent intent = new Intent(this, GlideOptimalizeImageActivity.class);
+                startActivity(intent);
+            }
+            break;
             case R.id.btn_single_image: {
                 Intent intent = new Intent(this, SingleImageActivity.class);
                 startActivity(intent);
