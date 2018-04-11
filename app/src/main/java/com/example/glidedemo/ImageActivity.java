@@ -13,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.glidedemo.ui.BaseImageAdapter;
+
 public class ImageActivity extends AppCompatActivity {
     private ListView lst;
-    private ImageAdapter imageAdapter;
+    private BaseImageAdapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class ImageActivity extends AppCompatActivity {
         ContentResolver cp = getContentResolver();
         Cursor cursor = cp.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
-        imageAdapter = new ImageAdapter(this, cursor);
+        imageAdapter = new BaseImageAdapter(this, cursor);
         lst.setAdapter(imageAdapter);
     }
 }

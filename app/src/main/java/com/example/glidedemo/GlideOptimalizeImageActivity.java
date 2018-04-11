@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.example.glidedemo.ui.GlideOptimalizeImageAdapter;
+
 public class GlideOptimalizeImageActivity extends AppCompatActivity {
     private ListView lst;
     private GlideOptimalizeImageAdapter adapter;
