@@ -18,6 +18,7 @@ import com.example.glidedemo.ui.BaseImageAdapter;
 public class ImageActivity extends AppCompatActivity {
     private ListView lst;
     private BaseImageAdapter imageAdapter;
+    public static final int EXTRA_OPTIMIZE_THREAD = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.glidedemo.ui.QualityAndSizeOptimizeAdapter;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -22,7 +24,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             break;
-            case R.id.btn_optimize: {
+            case R.id.btn_optimize_thread: {
+                Intent intent = new Intent(this, OptimalizeImageActivity.class);
+                intent.putExtra("adapter", ImageActivity.EXTRA_OPTIMIZE_THREAD);
+                startActivity(intent);
+            }
+            case R.id.btn_optimize_async_task: {
                 Intent intent = new Intent(this, OptimalizeImageActivity.class);
                 startActivity(intent);
             }
