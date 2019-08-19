@@ -1,4 +1,4 @@
-package com.example.glidedemo;
+package com.example.glidedemo.ui;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -19,13 +19,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.glidedemo.R;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class QualityCompressActivity extends AppCompatActivity {
+public class QualityCompressActivity extends ImageBaseActivity {
     private ImageView image;
     private TextView txt_bitmap_info;
     private CheckBox chx_is_store;

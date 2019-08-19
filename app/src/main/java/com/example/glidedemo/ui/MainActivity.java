@@ -1,20 +1,50 @@
-package com.example.glidedemo;
+package com.example.glidedemo.ui;
 
+import android.Manifest;
 import android.content.Intent;
-import android.os.Environment;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.glidedemo.ui.QualityAndSizeOptimizeAdapter;
+import com.example.glidedemo.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private String[] permissions = new String[]{
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private List<String> unRequestedPermissions = new ArrayList<>();
+    private int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        requestPermissions();
+    }
+
+    /**
+     * 获取权限
+     */
+    private void requestPermissions() {
+        //首先筛选出没有授权的权限
+        for (String p : permissions) {
+            if (checkSelfPermission(p) != PackageManager.PERMISSION_GRANTED) {
+                unRequestedPermissions.add(p);
+            }
+        }
+        //list避免为空，会报异常
+        if (!unRequestedPermissions.isEmpty()) {
+            //统一获取权限
+            String[] sArray = new String[unRequestedPermissions.size()];
+            sArray = unRequestedPermissions.toArray(sArray);
+            requestPermissions(sArray, MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+        }
     }
 
     public void onClick(View view) {

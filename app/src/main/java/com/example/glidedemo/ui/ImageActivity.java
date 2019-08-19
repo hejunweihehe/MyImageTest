@@ -1,4 +1,4 @@
-package com.example.glidedemo;
+package com.example.glidedemo.ui;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.glidedemo.R;
 import com.example.glidedemo.ui.BaseImageAdapter;
 
 public class ImageActivity extends AppCompatActivity {

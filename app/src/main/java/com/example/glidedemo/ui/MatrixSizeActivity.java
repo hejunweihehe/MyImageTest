@@ -1,4 +1,4 @@
-package com.example.glidedemo;
+package com.example.glidedemo.ui;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -18,11 +18,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.glidedemo.R;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class MatrixSizeActivity extends AppCompatActivity {
+public class MatrixSizeActivity extends ImageBaseActivity {
     private ImageView image;
     private TextView txt_bitmap_info;
     private CheckBox chx_is_store;

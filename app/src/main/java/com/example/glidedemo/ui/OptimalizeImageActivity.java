@@ -1,4 +1,4 @@
-package com.example.glidedemo;
+package com.example.glidedemo.ui;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
+import com.example.glidedemo.R;
 import com.example.glidedemo.ui.QualityAndSizeOptimizeAdapter;
 
 public class OptimalizeImageActivity extends AppCompatActivity {
