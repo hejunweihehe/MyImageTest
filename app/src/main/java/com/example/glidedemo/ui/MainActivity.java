@@ -3,11 +3,7 @@ package com.example.glidedemo.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.example.glidedemo.R;
@@ -15,7 +11,7 @@ import com.example.glidedemo.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends ImageBaseActivity {
     private String[] permissions = new String[]{
             Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private List<String> unRequestedPermissions = new ArrayList<>();
@@ -49,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.btn_show_image: {
+                Intent intent = new Intent(this, ImageInfoActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.btn_unoptimize: {
                 Intent intent = new Intent(this, ImageActivity.class);
                 startActivity(intent);
@@ -69,21 +70,23 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
             break;
-            case R.id.btn_single_image: {
-                Intent intent = new Intent(this, SingleImageActivity.class);
-                startActivity(intent);
-            }
-            break;
             case R.id.btn_quality_compress_image: {
                 Intent intent = new Intent(this, QualityCompressActivity.class);
                 startActivity(intent);
             }
             break;
             case R.id.btn_size_compress_image: {
+                //尺寸压缩
                 Intent intent = new Intent(this, SizeCompressActivity.class);
                 startActivity(intent);
             }
             break;
+            case R.id.btn_size_compress_image_by_glide: {
+                //使用glide框架进行尺寸压缩
+                Intent intent = new Intent(this, SizeCompressByGlideActivity.class);
+                startActivity(intent);
+                break;
+            }
             case R.id.btn_in_sample_size_image: {
                 Intent intent = new Intent(this, InSampleSizeActivity.class);
                 startActivity(intent);
