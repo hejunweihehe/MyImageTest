@@ -55,6 +55,9 @@ public class MainActivity extends ImageBaseActivity {
                 startActivity(intent);
             }
             break;
+            case R.id.btn_new_config: {
+                break;
+            }
             case R.id.btn_optimize_thread: {
                 Intent intent = new Intent(this, OptimalizeImageActivity.class);
                 intent.putExtra("adapter", ImageActivity.EXTRA_OPTIMIZE_THREAD);
