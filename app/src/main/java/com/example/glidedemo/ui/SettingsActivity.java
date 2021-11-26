@@ -39,12 +39,15 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
-            Uri uri = data.getData();
-            if (uri != null) {
-                ImageInfo.getInstance().setUri(uri);
-            } else {
-                Toast.makeText(this, "获取图片失败，或者是相册中没有图片", Toast.LENGTH_SHORT).show();
+            if (data != null) {
+                Uri uri = data.getData();
+                if (uri != null) {
+                    ImageInfo.getInstance().setUri(uri);
+                    return;
+                }
             }
+
+            Toast.makeText(this, "获取图片失败，或者是相册中没有图片", Toast.LENGTH_SHORT).show();
         }
     }
 }
