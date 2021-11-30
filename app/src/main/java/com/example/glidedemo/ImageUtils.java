@@ -1,10 +1,17 @@
 package com.example.glidedemo;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 
 /**
  * Created by 84625 on 2018/3/26.
@@ -54,5 +61,44 @@ public class ImageUtils {
         }
 
         return inSampleSize;
+    }
+
+    public static String parseUriDetails(Context context, Uri uri) {
+        Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+        if (cursor.getCount() <= 0) {
+            Toast.makeText(context, "未检索到数据", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        while (cursor.moveToNext()) {
+            for (String columnName : cursor.getColumnNames()) {
+                stringBuilder.append(columnName).append(":").append(cursor.getString(cursor.getColumnIndex(columnName))).append("\n");
+            }
+        }
+        cursor.close();
+        return stringBuilder.toString();
+    }
+
+    /**
+     * 根据uri获取bitmap
+     */
+    public static Bitmap getBitmap(Context context, Uri uri) {
+        try {
+            return BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 这是通过media库来获取bitmap
+     */
+    public static Bitmap getMediaBitmap(Context context, Uri uri) {
+        ContentResolver cp = context.getContentResolver();
+        Cursor cursor = cp.query(uri, null, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+        cursor.moveToPosition(0);
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
+        return BitmapFactory.decodeFile(path);
     }
 }
