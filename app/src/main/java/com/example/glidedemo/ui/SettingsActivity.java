@@ -24,7 +24,7 @@ import com.example.glidedemo.databinding.ActivitySettingsBinding;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends ImageBaseActivity {
     private static ActivitySettingsBinding binding;
     private int requestCode = 1;
 
@@ -58,6 +58,7 @@ public class SettingsActivity extends AppCompatActivity {
             }
             case R.id.btn_get_document: {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 intent.setType("*/*");
                 startActivityForResult(intent);
             }

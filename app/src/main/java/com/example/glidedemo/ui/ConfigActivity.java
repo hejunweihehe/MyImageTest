@@ -20,10 +20,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.glidedemo.ImageInfo;
 import com.example.glidedemo.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
 public class ConfigActivity extends ImageBaseActivity {
@@ -59,12 +61,29 @@ public class ConfigActivity extends ImageBaseActivity {
         name = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
 
         //加载图片的格式
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, options);
-        StringBuilder sb = new StringBuilder();
-        sb.append("inPreferredConfig:" + options.inPreferredConfig);
-        txt_pre_config.setText(sb.toString());
+        try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(getContentResolver().openInputStream(ImageInfo.getInstance().getUri()), null, options);
+            StringBuilder sb = new StringBuilder();
+            sb.append("inPreferredConfig:" + options.inPreferredConfig);
+            txt_pre_config.setText(sb.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        try {
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(ImageInfo.getInstance().getUri()));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        image.setImageBitmap(bitmap);
+        refreshUi();
     }
 
     public void onClick(View view) {
@@ -73,7 +92,12 @@ public class ConfigActivity extends ImageBaseActivity {
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 Bitmap.Config newConfig = (Bitmap.Config) spinner.getSelectedItem();
                 options.inPreferredConfig = newConfig;
-                bitmap = BitmapFactory.decodeFile(path, options);
+//                bitmap = BitmapFactory.decodeFile(path, options);
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(ImageInfo.getInstance().getUri()), null, options);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 image.setImageBitmap(bitmap);
                 refreshUi();
                 //是否保存到本地

@@ -47,6 +47,7 @@ public class MainActivity extends ImageBaseActivity {
         switch (view.getId()) {
             case R.id.btn_show_image: {
                 Intent intent = new Intent(this, ImageInfoActivity.class);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(intent);
                 break;
             }
@@ -55,9 +56,6 @@ public class MainActivity extends ImageBaseActivity {
                 startActivity(intent);
             }
             break;
-            case R.id.btn_new_config: {
-                break;
-            }
             case R.id.btn_optimize_thread: {
                 Intent intent = new Intent(this, OptimalizeImageActivity.class);
                 intent.putExtra("adapter", ImageActivity.EXTRA_OPTIMIZE_THREAD);
@@ -103,6 +101,9 @@ public class MainActivity extends ImageBaseActivity {
             case R.id.btn_config_image: {
                 Intent intent = new Intent(this, ConfigActivity.class);
                 startActivity(intent);
+            }
+            break;
+            case R.id.btn_multi_compress_image: {
             }
             break;
         }

@@ -50,17 +50,17 @@ public class ImageInfoActivity extends ImageBaseActivity {
         if (uri == null) {
             uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
         }
-        ContentResolver cp = getContentResolver();
-        Cursor cursor = cp.query(uri, null, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
-        cursor.moveToPosition(0);
 
-        String fileInfo = "uri信息:" + ImageUtils.parseUriDetails(this, uri);
+        String fileInfo;
 //        try {
         //默认uri：content://media/external/images/media
         bitmap = ImageUtils.getBitmap(this, uri);
         if (bitmap == null) {
             bitmap = ImageUtils.getMediaBitmap(this, uri);
             if (bitmap != null) {
+                ContentResolver cp = getContentResolver();
+                Cursor cursor = cp.query(uri, null, null, null, MediaStore.Images.Media.DEFAULT_SORT_ORDER);
+                cursor.moveToPosition(0);
                 //图片路径
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA));
                 //图片名字

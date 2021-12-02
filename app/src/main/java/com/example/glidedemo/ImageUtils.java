@@ -87,6 +87,14 @@ public class ImageUtils {
             return BitmapFactory.decodeStream(context.getContentResolver().openInputStream(uri));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+            /**
+             * TODO
+             * 没有拿到uri访问权限，奇怪的bug，记得修复。BUG出现流程：从图片展示页（ImageInfoActivity）打开设置页，然后选一张图片，按下后退键回到展示页后，这里没报错。然后退到首页，再一次进入图片展示页时，这里就报错了，说是没有uri访问权限
+             * 在这篇文章看看能不能找到点线索：https://blog.csdn.net/qq_24125575/article/details/109167437
+             * 如果从图库选择一张图片，那么不会报错，但是如果从文件管理器的路径中去找这张图片并选择，那么会报错，所以可能是图库给了权限，而文件管理器没给权限
+             */
         }
         return null;
     }
