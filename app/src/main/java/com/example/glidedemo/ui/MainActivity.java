@@ -106,6 +106,9 @@ public class MainActivity extends ImageBaseActivity {
             case R.id.btn_multi_compress_image: {
             }
             break;
+            case R.id.btn_compressor: {
+                break;
+            }
         }
     }
 }
