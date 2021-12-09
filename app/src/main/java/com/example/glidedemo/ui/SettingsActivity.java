@@ -24,6 +24,9 @@ import com.example.glidedemo.databinding.ActivitySettingsBinding;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 
+/**
+ * @author hejunwei
+ */
 public class SettingsActivity extends ImageBaseActivity {
     private static ActivitySettingsBinding binding;
     private int requestCode = 1;

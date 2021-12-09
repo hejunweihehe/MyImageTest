@@ -107,6 +107,8 @@ public class MainActivity extends ImageBaseActivity {
             }
             break;
             case R.id.btn_compressor: {
+                Intent intent = new Intent(this, CompressorActivity.class);
+                startActivity(intent);
                 break;
             }
         }
